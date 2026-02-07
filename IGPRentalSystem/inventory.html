@@ -125,24 +125,8 @@
 
         // Update inventory table
         async function updateInventoryTable(skipFetch = false) {
-            // Load inventory items from Firebase if available using smart sync
-            if (!skipFetch && rentalFirebaseService) {
-                try {
-                    const firebaseItems = await rentalFirebaseService.getInventoryItemsSinceSync();
-                    if (firebaseItems && firebaseItems.length > 0) {
-                        inventoryItems = firebaseItems;
-                        console.log('Synced inventory items from Firebase for table update:', firebaseItems.length);
-                    } else {
-                        // Fallback to localStorage if no items
-                        inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-                    }
-                } catch (error) {
-                    console.error('Error syncing inventory items from Firebase:', error);
-                    // Fallback to localStorage
-                    inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-                }
-            } else if (!skipFetch) {
-                // Fallback to localStorage if Firebase not available
+            // Load inventory items from localStorage
+            if (!skipFetch) {
                 inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
             }
 
@@ -395,89 +379,17 @@
 
 
     <script>
-        // Firebase integration for inventory management
-        let rentalFirebaseService = null;
-
-        // Initialize Firebase
-        document.addEventListener('DOMContentLoaded', async function () {
-            // 1. Render immediately from localStorage
-            inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-            await updateInventoryTable(true); // skipFetch=true
-
-            try {
-                if (window.firebaseDb) {
-                    rentalFirebaseService = new RentalSystemFirebaseService();
-                    console.log('Firebase connected for inventory management');
-
-                    // 2. Smart sync: Load only missing/updated inventory items from Firebase
-                    try {
-                        const firebaseItems = await rentalFirebaseService.getInventoryItemsSinceSync();
-                        if (firebaseItems && firebaseItems.length > 0) {
-                            inventoryItems = firebaseItems;
-                            console.log('Synced inventory items from Firebase:', firebaseItems.length);
-                            await updateInventoryTable(true); // skip internal fetch since we just synced
-                        }
-                    } catch (error) {
-                        console.error('Error syncing inventory items from Firebase:', error);
-                    }
-
-                    // Set up real-time listener for inventory items (to detect reservations from Android app)
-                    try {
-                        rentalFirebaseService.listenToInventoryItems((items) => {
-                            console.log('Inventory items updated in real-time:', items.length);
-                            inventoryItems = items.map(item => ({
-                                ...item,
-                                lastRenter: item.lastRenter || '',
-                                currentRenter: item.currentRenter || '',
-                                reservedBy: item.reservedBy || item.currentRenter || '',
-                                status: item.status || 'available',
-                                rentalStartTime: item.rentalStartTime || null, // Preserve rentalStartTime from Firebase
-                                rentalEndTime: item.rentalEndTime || null, // Preserve rentalEndTime from Firebase
-                                rentalHours: item.rentalHours || null // Preserve rentalHours from Firebase
-                            }));
-
-                            // Save to localStorage
-                            localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-
-                            updateInventoryTable(true);
-                        });
-                        console.log('Real-time listener set up for inventory items');
-                    } catch (error) {
-                        console.error('Error setting up real-time listener:', error);
-                    }
-                } else {
-                    throw new Error('Firebase not available');
-                }
-            } catch (error) {
-                console.error('Firebase initialization failed:', error);
-                // Keep using localStorage
-                await updateInventoryTable();
-            }
-        });
-
         // Inventory Delete Confirmation Handler
         document.getElementById('deleteItemConfirmBtn').addEventListener('click', async function () {
             const val = document.getElementById('deleteItemConfirmInput').value.trim();
             if (val === 'Delete') {
                 const itemId = window._itemToDelete;
                 if (itemId) {
-                    // Remove from Firebase first
-                    if (rentalFirebaseService) {
-                        try {
-                            await rentalFirebaseService.deleteInventoryItem(itemId);
-                            console.log('Inventory item deleted from Firebase:', itemId);
-                        } catch (error) {
-                            console.error('Error deleting inventory item from Firebase:', error);
-                            // Still remove from local array even if Firebase fails
-                        }
-                    }
-
+                    // Remove from inventory
                     inventoryItems = inventoryItems.filter(item => item.id !== itemId);
 
-                    // Fallback to localStorage if Firebase not available
-                    if (!rentalFirebaseService) {
-                        localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-                    }
+                    // Save to localStorage
+                    localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
 
                     await updateInventoryTable();
 

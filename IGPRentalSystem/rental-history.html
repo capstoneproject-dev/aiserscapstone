@@ -175,10 +175,8 @@
     <script src="js/script.js"></script>
     <script src="lib/xlsx.full.min.js"></script>
     <script src="lib/encoder.js"></script>
-    <!-- Offline queue helper must load before Firebase service -->
-    <script src="js/offline-queue-service.js"></script>
     <script>
-        // Initialize Firebase
+        // Initialize page
         document.addEventListener('DOMContentLoaded', async function () {
             // Set default date filter to current date
             const dateInput = document.getElementById('historyDateFilter');
@@ -190,36 +188,8 @@
                 dateInput.value = `${year}-${month}-${day}`;
             }
 
-            // 1. Render immediately from localStorage
+            // Render immediately from localStorage
             rentalRecords = JSON.parse(localStorage.getItem('rentalRecords')) || [];
-            updateRentalHistoryTableStandalone();
-
-            try {
-                if (window.firebaseDb) {
-                    rentalFirebaseService = new RentalSystemFirebaseService();
-
-                    // 2. Smart sync: Load only missing/updated rental records from Firebase
-                    try {
-                        const records = await rentalFirebaseService.getRentalRecordsSinceSync();
-                        if (records && records.length > 0) {
-                            rentalRecords = records;
-                            console.log('Rental history synced from Firebase');
-                            updateRentalHistoryTableStandalone();
-                        }
-                    } catch (fetchError) {
-                        console.error('Error syncing history:', fetchError);
-                    }
-
-                    // Set up real-time listener for rental records
-                    setupRentalRecordsListener();
-                } else {
-                    console.warn('Firebase not available, using local data only');
-                }
-            } catch (error) {
-                console.error('Firebase initialization error:', error);
-            }
-
-            // Initialize the page
             updateRentalHistoryTableStandalone();
 
             // Set up event listeners after DOM is ready
@@ -444,41 +414,6 @@
                     console.log('Export button exists and is clickable:', exportBtn.offsetParent !== null);
                 }
             }, 200);
-        }
-
-        // Set up real-time listener for rental records
-        function setupRentalRecordsListener() {
-            if (!rentalFirebaseService) {
-                console.log('Firebase service not available for real-time listener');
-                return;
-            }
-
-            try {
-                // Listen to changes in the rental records collection
-                window.firebaseDb.collection('RentalSystem_rentalRecords').onSnapshot((snapshot) => {
-                    console.log('Rental records updated in Firebase');
-
-                    // Update the local rentalRecords array
-                    rentalRecords = [];
-                    snapshot.forEach((doc) => {
-                        rentalRecords.push({ id: doc.id, ...doc.data() });
-                    });
-
-                    // Save to localStorage
-                    localStorage.setItem('rentalRecords', JSON.stringify(rentalRecords));
-
-                    // Update the table display
-                    updateRentalHistoryTableStandalone();
-
-                    console.log(`Updated rental records: ${rentalRecords.length} records`);
-                }, (error) => {
-                    console.error('Error listening to rental records:', error);
-                });
-
-                console.log('Real-time listener for rental records set up');
-            } catch (error) {
-                console.error('Error setting up rental records listener:', error);
-            }
         }
 
         // Export to Excel

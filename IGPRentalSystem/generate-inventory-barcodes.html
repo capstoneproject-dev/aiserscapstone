@@ -353,24 +353,11 @@
                 status: 'available'
             };
 
-            // Add to Firebase first
-            if (rentalFirebaseService) {
-                try {
-                    await rentalFirebaseService.addInventoryItem(newItem);
-                    console.log('Inventory item added to Firebase:', newItem);
-                } catch (error) {
-                    console.error('Error adding inventory item to Firebase:', error);
-                    // Still add to local array even if Firebase fails
-                }
-            }
-
             // Add to local array
             inventoryItems.push(newItem);
 
-            // Fallback to localStorage if Firebase not available
-            if (!rentalFirebaseService) {
-                localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-            }
+            // Save to localStorage
+            localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
 
             // Update display
             generateBarcodes();
@@ -473,29 +460,14 @@
                     }
                 }
 
-                // Add to Firebase first
-                if (rentalFirebaseService) {
-                    try {
-                        for (const item of newItems) {
-                            await rentalFirebaseService.addInventoryItem(item);
-                        }
-                        console.log('Excel items added to Firebase:', newItems.length);
-                    } catch (error) {
-                        console.error('Error adding Excel items to Firebase:', error);
-                        // Still add to local array even if Firebase fails
-                    }
-                }
-
                 // Merge: update existing or add new
                 const itemMap = {};
                 inventoryItems.forEach(item => { itemMap[item.id] = item; });
                 newItems.forEach(item => { itemMap[item.id] = item; });
                 inventoryItems = Object.values(itemMap);
 
-                // Fallback to localStorage if Firebase not available
-                if (!rentalFirebaseService) {
-                    localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-                }
+                // Save to localStorage
+                localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
 
                 generateBarcodes();
 
@@ -551,28 +523,11 @@
 
         confirmDeleteAllBtn.addEventListener('click', async function () {
             if (deleteConfirmInput.value === 'Delete') {
-                // Delete all from Firebase first
-                if (rentalFirebaseService) {
-                    try {
-                        // Get all inventory items from Firebase and delete them
-                        const allItems = await rentalFirebaseService.getInventoryItems();
-                        for (const item of allItems) {
-                            await rentalFirebaseService.deleteInventoryItem(item.id);
-                        }
-                        console.log('All inventory items deleted from Firebase');
-                    } catch (error) {
-                        console.error('Error deleting all inventory items from Firebase:', error);
-                        // Still clear local array even if Firebase fails
-                    }
-                }
-
                 // Clear all inventory items
                 inventoryItems = [];
 
-                // Fallback to localStorage if Firebase not available
-                if (!rentalFirebaseService) {
-                    localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-                }
+                // Save to localStorage
+                localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
 
                 // Update display
                 generateBarcodes();
@@ -611,23 +566,11 @@
             if (deleteItemConfirmInput.value === 'Delete') {
                 const itemToDelete = window._itemToDelete;
                 if (itemToDelete) {
-                    // Remove from Firebase first
-                    if (rentalFirebaseService) {
-                        try {
-                            await rentalFirebaseService.deleteInventoryItem(itemToDelete.id);
-                            console.log('Inventory item deleted from Firebase:', itemToDelete.id);
-                        } catch (error) {
-                            console.error('Error deleting inventory item from Firebase:', error);
-                            // Still remove from local array even if Firebase fails
-                        }
-                    }
-
+                    // Remove from inventory
                     inventoryItems = inventoryItems.filter(item => item.id !== itemToDelete.id);
 
-                    // Fallback to localStorage if Firebase not available
-                    if (!rentalFirebaseService) {
-                        localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-                    }
+                    // Save to localStorage
+                    localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
 
                     generateBarcodes();
 
@@ -643,107 +586,7 @@
 
 
 
-    <script>
-        // Firebase integration for barcode generation
-        let rentalFirebaseService = null;
 
-        // Initialize Firebase
-        document.addEventListener('DOMContentLoaded', async function () {
-            // 1. Render immediately from localStorage
-            inventoryItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-            generateBarcodes();
-
-            try {
-                if (window.firebaseDb) {
-                    rentalFirebaseService = new RentalSystemFirebaseService();
-                    console.log('Firebase connected for barcode generation');
-
-                    // 2. Smart sync: Load only missing/updated inventory items from Firebase
-                    try {
-                        const firebaseItems = await rentalFirebaseService.getInventoryItemsSinceSync();
-                        if (firebaseItems && firebaseItems.length > 0) {
-                            inventoryItems = firebaseItems;
-                            console.log('Synced inventory items from Firebase:', firebaseItems.length);
-                        }
-                    } catch (error) {
-                        console.error('Error syncing inventory items from Firebase:', error);
-                    }
-
-                    // Update display with loaded items
-                    generateBarcodes();
-
-                    // Set up real-time listener for inventory updates
-                    setupInventoryListener();
-                } else {
-                    throw new Error('Firebase not available');
-                }
-            } catch (error) {
-                console.error('Firebase initialization failed:', error);
-                // Keep using localStorage
-            }
-        });
-
-        // Set up real-time listener for inventory updates
-        function setupInventoryListener() {
-            if (!rentalFirebaseService || !window.firebaseDb) {
-                console.log('Firebase service not available for real-time listener');
-                return;
-            }
-
-            try {
-                // Listen to changes in the inventory collection
-                window.firebaseDb.collection('RentalSystem_inventory').onSnapshot((snapshot) => {
-                    console.log('Inventory updated in Firebase');
-
-                    // Update the local inventoryItems array
-                    inventoryItems = [];
-                    snapshot.forEach((doc) => {
-                        inventoryItems.push({ id: doc.id, ...doc.data() });
-                    });
-
-                    // Save to localStorage
-                    localStorage.setItem('inventoryItems', JSON.stringify(inventoryItems));
-
-                    // Update the display
-                    generateBarcodes();
-
-                    console.log(`Updated inventory items: ${inventoryItems.length} items`);
-                }, (error) => {
-                    console.error('Error listening to inventory updates:', error);
-                });
-
-                console.log('Real-time listener for inventory set up');
-            } catch (error) {
-                console.error('Error setting up inventory listener:', error);
-            }
-        }
-
-        // Override updateInventoryDatabase to use Firebase
-        async function updateInventoryDatabase(items) {
-            if (rentalFirebaseService) {
-                try {
-                    for (const item of items) {
-                        await rentalFirebaseService.addInventoryItem(item);
-                    }
-                    console.log('Inventory items added to Firebase');
-                    alert(`Successfully added ${items.length} inventory items to Firebase!`);
-                } catch (error) {
-                    console.error('Error adding inventory items to Firebase:', error);
-                    // Fallback to localStorage
-                    const existingItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-                    const updatedItems = [...existingItems, ...items];
-                    localStorage.setItem('inventoryItems', JSON.stringify(updatedItems));
-                    alert(`Successfully added ${items.length} inventory items to localStorage!`);
-                }
-            } else {
-                // Fallback to localStorage
-                const existingItems = JSON.parse(localStorage.getItem('inventoryItems')) || [];
-                const updatedItems = [...existingItems, ...items];
-                localStorage.setItem('inventoryItems', JSON.stringify(updatedItems));
-                alert(`Successfully added ${items.length} inventory items to localStorage!`);
-            }
-        }
-    </script>
 
     <script src="lib/jszip.min.js"></script>
 </body>
