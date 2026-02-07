@@ -1,85 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome - Equipment Rental System</title>
-    <link href="lib/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome - Equipment Rental System</title>
+  <link href="lib/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="lib/styles.css">
 </head>
+
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center" href="../homepage/index.html">
-                <img src="../merchandise/Photos/PHILSCA-LOGO-WINGS.png" alt="AISERS Logo" style="height:48px;width:auto;margin-right:12px;">
-                <span class="fw-bold" style="letter-spacing:2px;font-size:1.5rem;">ALLIANCE APP</span>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="../homepage/index.html">Home</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <div class="container mt-5" style="margin-top: 120px !important;">
-        <div class="d-flex justify-content-end mb-3">
-            <button class="btn btn-outline-warning nav-secure-btn" data-target="admin.html">Officer Database</button>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body text-center">
-                        <h1 class="card-title mb-4">IGP Rental System</h1>
-                        <div class="d-grid gap-3">
-                            <a href="index.html" class="btn btn-primary btn-lg mb-2">Go to Rental System</a>
-                            <button class="btn btn-outline-primary btn-lg nav-secure-btn" data-target="inventory.html">Manage Inventory</button>
-                            <button class="btn btn-outline-secondary btn-lg nav-secure-btn" data-target="generate-inventory-barcodes.html">Inventory Barcodes</button>
-                            <button class="btn btn-outline-info btn-lg nav-secure-btn" data-target="student-database.html">Student Database</button>
-                            <a href="rental-history.html" class="btn btn-outline-info btn-lg nav-secure-btn"">View Rental History</a>
-                            <button class="btn btn-outline-info btn-lg nav-secure-btn"" data-target="financial-summary.html">Financial Summary</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="../homepage/index.html">
+        <img src="../merchandise/Photos/PHILSCA-LOGO-WINGS.png" alt="AISERS Logo"
+          style="height:48px;width:auto;margin-right:12px;">
+        <span class="fw-bold" style="letter-spacing:2px;font-size:1.5rem;">ALLIANCE APP</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="../homepage/index.html">Home</a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <!-- Officer Verification Modal -->
-    <div class="modal fade" id="officerVerifyModal" tabindex="-1" aria-labelledby="officerVerifyModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="officerVerifyModalLabel">Officer Verification</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Scan Officer Barcode</label>
-              <div id="scannedBarcodeDisplay" class="form-control bg-light" style="height:38px; line-height:38px; font-size:1.1em; user-select:all;">Waiting for scan...</div>
+  </nav>
+  <div class="container mt-5" style="margin-top: 120px !important;">
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-warning nav-secure-btn" data-target="admin.html">Officer Database</button>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body text-center">
+            <h1 class="card-title mb-4">IGP Rental System</h1>
+            <div class="d-grid gap-3">
+              <a href="index.html" class="btn btn-primary btn-lg mb-2">Go to Rental System</a>
+              <button class="btn btn-outline-primary btn-lg nav-secure-btn" data-target="inventory.html">Manage
+                Inventory</button>
+              <button class="btn btn-outline-secondary btn-lg nav-secure-btn"
+                data-target="generate-inventory-barcodes.html">Inventory Barcodes</button>
+              <button class="btn btn-outline-info btn-lg nav-secure-btn" data-target="student-database.html">Student
+                Database</button>
+              <a href="rental-history.html" class="btn btn-outline-info btn-lg nav-secure-btn"">View Rental History</a>
+                            <button class=" btn btn-outline-info btn-lg nav-secure-btn""
+                data-target="financial-summary.html">Financial Summary</button>
             </div>
-            <div class="text-center mb-2">or</div>
-            <div class="mb-3">
-              <label for="officerPasswordInput" class="form-label">Enter Password</label>
-              <input type="password" class="form-control" id="officerPasswordInput" placeholder="Enter password...">
-            </div>
-            <div id="officerVerifyError" class="text-danger mb-2" style="display:none;"></div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-            <button type="button" class="btn btn-primary" id="officerVerifyBtn">Verify</button>
           </div>
         </div>
       </div>
     </div>
-    <script src="lib/bootstrap.bundle.min.js"></script>
-    <script src="lib/encoder.js"></script>
-    <script>
+  </div>
+  <!-- Officer Verification Modal -->
+  <div class="modal fade" id="officerVerifyModal" tabindex="-1" aria-labelledby="officerVerifyModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="officerVerifyModalLabel">Officer Verification</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Scan Officer Barcode</label>
+            <div id="scannedBarcodeDisplay" class="form-control bg-light"
+              style="height:38px; line-height:38px; font-size:1.1em; user-select:all;">Waiting for scan...</div>
+          </div>
+          <div class="text-center mb-2">or</div>
+          <div class="mb-3">
+            <label for="officerPasswordInput" class="form-label">Enter Password</label>
+            <input type="password" class="form-control" id="officerPasswordInput" placeholder="Enter password...">
+          </div>
+          <div id="officerVerifyError" class="text-danger mb-2" style="display:none;"></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="officerVerifyBtn">Verify</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="lib/bootstrap.bundle.min.js"></script>
+  <script src="lib/encoder.js"></script>
+  <script>
     // Officer/Password Security for All Nav Buttons
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       const navSecureBtns = document.querySelectorAll('.nav-secure-btn');
       const officerVerifyModalEl = document.getElementById('officerVerifyModal');
       const officerVerifyModal = new bootstrap.Modal(officerVerifyModalEl);
@@ -97,7 +106,7 @@
       }
 
       navSecureBtns.forEach(btn => {
-        btn.addEventListener('click', function() {
+        btn.addEventListener('click', function () {
           errorDiv.style.display = 'none';
           passwordInput.value = '';
           scannedBarcodeDisplay.textContent = 'Waiting for scan...';
@@ -143,15 +152,15 @@
         }
       }
 
-      verifyBtn.addEventListener('click', function() {
+      verifyBtn.addEventListener('click', function () {
         verifyOfficerAccess(barcodeBuffer);
       });
-      passwordInput.addEventListener('keydown', function(e) {
+      passwordInput.addEventListener('keydown', function (e) {
         if (e.key === 'Enter') verifyOfficerAccess(barcodeBuffer);
       });
 
       // Global key listener for barcode scanning
-      document.addEventListener('keydown', function(e) {
+      document.addEventListener('keydown', function (e) {
         if (!modalOpen) return;
         // Ignore if password input is focused
         if (document.activeElement === passwordInput) return;
@@ -177,6 +186,7 @@
         }
       });
     });
-    </script>
+  </script>
 </body>
+
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,14 @@
     <link href="lib/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <!-- Navigation (matches merchandise header style) -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="../homepage/index.html">
-                <img src="../merchandise/Photos/PHILSCA-LOGO-WINGS.png" alt="AISERS Logo" style="height:48px;width:auto;margin-right:12px;">
+                <img src="../merchandise/Photos/PHILSCA-LOGO-WINGS.png" alt="AISERS Logo"
+                    style="height:48px;width:auto;margin-right:12px;">
                 <span class="fw-bold" style="letter-spacing:2px;font-size:1.5rem;">ALLIANCE APP</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -32,8 +35,6 @@
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="mb-0">Events Overview</h1>
             <div>
-                <span id="offlineStatus" class="badge me-2" style="display: none;"></span>
-                <span id="pendingSyncCount" class="badge bg-warning me-2" style="display: none;"></span>
                 <a href="welcome.html" class="btn btn-primary me-2">Create New Event</a>
                 <a href="index.html" class="btn btn-warning">Back to Scanner</a>
             </div>
@@ -44,7 +45,8 @@
             <div class="card-header d-flex justify-content-between align-items-center">
                 <h2 class="h5 mb-0">All Events</h2>
                 <div>
-                    <input type="text" id="eventSearchInput" class="form-control form-control-sm me-2" placeholder="Search events..." style="display:inline-block; width:auto; min-width:200px;">
+                    <input type="text" id="eventSearchInput" class="form-control form-control-sm me-2"
+                        placeholder="Search events..." style="display:inline-block; width:auto; min-width:200px;">
                     <button id="deleteAllEvents" class="btn btn-danger btn-sm me-2">Delete All Events</button>
                     <button id="exportAllEvents" class="btn btn-success btn-sm me-2">Export All Events</button>
                     <button id="importEvents" class="btn btn-primary btn-sm">Import Events</button>
@@ -83,7 +85,8 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <h6 id="modalEventName" class="mb-0"></h6>
-                                <button class="btn btn-primary btn-sm" id="startEventAttendance">Start Attendance</button>
+                                <button class="btn btn-primary btn-sm" id="startEventAttendance">Start
+                                    Attendance</button>
                             </div>
                             <div class="table-responsive">
                                 <table class="table table-sm">
@@ -124,14 +127,17 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <p class="text-danger">Warning: This action cannot be undone. The event and all its attendance records will be permanently deleted.</p>
+                        <p class="text-danger">Warning: This action cannot be undone. The event and all its attendance
+                            records will be permanently deleted.</p>
                         <p><strong>Event Name:</strong> <span id="deleteEventName"></span></p>
                         <p>To confirm, please type "Delete" in the box below:</p>
-                        <input type="text" class="form-control" id="deleteEventConfirmation" placeholder="Type 'Delete' to confirm">
+                        <input type="text" class="form-control" id="deleteEventConfirmation"
+                            placeholder="Type 'Delete' to confirm">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" id="confirmDeleteEvent" disabled>Delete Event</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteEvent" disabled>Delete
+                            Event</button>
                     </div>
                 </div>
             </div>
@@ -146,13 +152,16 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <p class="text-danger">Warning: This action cannot be undone. All events and their attendance records will be permanently deleted.</p>
+                        <p class="text-danger">Warning: This action cannot be undone. All events and their attendance
+                            records will be permanently deleted.</p>
                         <p>To confirm, please type "Delete" in the box below:</p>
-                        <input type="text" class="form-control" id="deleteConfirmation" placeholder="Type 'Delete' to confirm">
+                        <input type="text" class="form-control" id="deleteConfirmation"
+                            placeholder="Type 'Delete' to confirm">
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                        <button type="button" class="btn btn-danger" id="confirmDeleteAll" disabled>Delete All Events</button>
+                        <button type="button" class="btn btn-danger" id="confirmDeleteAll" disabled>Delete All
+                            Events</button>
                     </div>
                 </div>
             </div>
@@ -160,11 +169,6 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="offline-sync-service.js"></script>
-    <script src="firebase-database-service.js"></script>
     <script src="lib/bootstrap.bundle.min.js"></script>
     <script src="lib/xlsx.full.min.js"></script>
     <script>
@@ -214,7 +218,7 @@
                             const filtered = localRecords.filter(r => {
                                 if (r.id === records.id) return false; // Match by Firebase ID
                                 // Also match by studentId, date, and event if available
-                                if (deletedData && r.studentId === deletedData.studentId && 
+                                if (deletedData && r.studentId === deletedData.studentId &&
                                     r.date === deletedData.date && r.event === deletedData.event) {
                                     return false;
                                 }
@@ -228,13 +232,13 @@
                         updateEventsList();
                         return;
                     }
-                    
+
                     // Handle additions/updates
                     if (Array.isArray(records)) {
                         // Save Firebase records to Local Storage if they don't exist there
                         if (window.offlineSync) {
                             const localRecords = window.offlineSync.getFromLocalStorage('attendance');
-                            const localRecordKeys = new Set(localRecords.map(r => 
+                            const localRecordKeys = new Set(localRecords.map(r =>
                                 `${r.studentId}_${r.date}_${r.event}`
                             ));
                             records.forEach(fbRecord => {
@@ -255,7 +259,7 @@
                         updateEventsList();
                     }
                 });
-                
+
                 // Set up real-time listener for events
                 firebaseDB.listenToEvents((eventList) => {
                     // Check if this is a deletion notification
@@ -265,7 +269,7 @@
                             const localEvents = window.offlineSync.getFromLocalStorage('events');
                             const filtered = localEvents.filter(e => e.id !== eventList.id);
                             localStorage.setItem(window.offlineSync.localStoragePrefix + 'events', JSON.stringify(filtered));
-                            
+
                             // Also remove associated attendance records if event name is available
                             const deletedData = eventList.data;
                             if (deletedData && deletedData.name) {
@@ -275,14 +279,14 @@
                                 localStorage.setItem('attendanceRecords', JSON.stringify(filteredRecords));
                                 attendanceRecords = filteredRecords;
                             }
-                            
+
                             events = filtered;
                             console.log('Removed event from Local Storage:', eventList.id);
                         }
                         updateEventsList();
                         return;
                     }
-                    
+
                     // Handle additions/updates
                     if (Array.isArray(eventList)) {
                         // Save Firebase events to Local Storage if they don't exist there
@@ -328,15 +332,15 @@
         }
 
         // Update offline status indicator (make it globally accessible)
-        window.updateOfflineStatus = function() {
+        window.updateOfflineStatus = function () {
             const offlineStatusEl = document.getElementById('offlineStatus');
             const pendingSyncCountEl = document.getElementById('pendingSyncCount');
-            
+
             if (!offlineStatusEl || !window.offlineSync) return;
-            
+
             const isOnline = window.offlineSync.isOnline;
             const pendingCount = window.offlineSync.getPendingSyncCount();
-            
+
             if (!isOnline) {
                 offlineStatusEl.textContent = '● Offline';
                 offlineStatusEl.className = 'badge bg-danger me-2';
@@ -346,7 +350,7 @@
                 offlineStatusEl.className = 'badge bg-success me-2';
                 offlineStatusEl.style.display = 'inline-block';
             }
-            
+
             if (pendingCount > 0) {
                 pendingSyncCountEl.textContent = `${pendingCount} pending`;
                 pendingSyncCountEl.style.display = 'inline-block';
@@ -356,17 +360,17 @@
         };
 
         // Listen for offline status changes
-        window.addEventListener('offlineStatusChanged', function(event) {
+        window.addEventListener('offlineStatusChanged', function (event) {
             if (typeof updateOfflineStatus === 'function') {
                 updateOfflineStatus();
             }
         });
 
         // Initialize the page
-        document.addEventListener('DOMContentLoaded', async function() {
+        document.addEventListener('DOMContentLoaded', async function () {
             // Initialize Firebase first
             const firebaseInitialized = await initializeFirebase();
-            
+
             // Always load from Local Storage first (for offline support)
             // getEventsWithAttendanceCounts() and getAttendanceRecords() already save Firebase data to Local Storage
             if (!firebaseInitialized) {
@@ -390,15 +394,15 @@
                     attendanceRecords = await firebaseDB.getAttendanceRecords();
                 }
             }
-            
+
             // Update offline status indicator
             updateOfflineStatus();
             // Update every 5 seconds
             setInterval(updateOfflineStatus, 5000);
-            
+
             updateEventsList();
             // Add search functionality
-            document.getElementById('eventSearchInput').addEventListener('input', function() {
+            document.getElementById('eventSearchInput').addEventListener('input', function () {
                 updateEventsList();
             });
         });
@@ -413,7 +417,7 @@
             events.forEach(event => {
                 const normalizedName = normalizeEventName(event.name);
                 if (!normalizedName) return; // Skip events with empty names
-                
+
                 // Only add if not already in map (avoid duplicates)
                 if (!eventsMap.has(normalizedName)) {
                     eventsMap.set(normalizedName, {
@@ -434,7 +438,7 @@
                 if (!record.event) return;
                 const normalizedEventName = normalizeEventName(record.event);
                 if (!normalizedEventName) return;
-                
+
                 if (!eventsMap.has(normalizedEventName)) {
                     // Create event from attendance record if it doesn't exist in Firebase
                     eventsMap.set(normalizedEventName, {
@@ -507,7 +511,7 @@
 
             // Add event listeners to view buttons
             document.querySelectorAll('.view-event').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const eventName = this.getAttribute('data-event');
                     showEventDetails(eventName);
                 });
@@ -515,7 +519,7 @@
 
             // Add event listeners to start attendance buttons
             document.querySelectorAll('.start-event').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const eventName = this.getAttribute('data-event');
                     startEventAttendance(eventName);
                 });
@@ -523,22 +527,22 @@
 
             // Add event listeners to delete buttons
             document.querySelectorAll('.delete-event').forEach(button => {
-                button.addEventListener('click', function() {
+                button.addEventListener('click', function () {
                     const eventName = this.getAttribute('data-event');
                     const eventId = this.getAttribute('data-event-id');
-                    
+
                     // Validate eventName
                     if (!eventName || eventName === 'undefined' || eventName === 'null') {
                         alert('Error: Event name is not valid. Cannot delete event.');
                         return;
                     }
-                    
+
                     // Store the event to delete globally
                     window.eventToDelete = {
                         eventName: eventName,
                         eventId: eventId
                     };
-                    
+
                     // Populate modal with event details
                     document.getElementById('deleteEventName').textContent = eventName;
                     const deleteEventConfirmationInput = document.getElementById('deleteEventConfirmation');
@@ -546,7 +550,7 @@
                         deleteEventConfirmationInput.value = '';
                     }
                     document.getElementById('confirmDeleteEvent').disabled = true;
-                    
+
                     // Show the modal
                     deleteEventModal.show();
                 });
@@ -603,14 +607,14 @@
         }
 
         // Add event listener for modal start attendance button
-        document.getElementById('startEventAttendance').addEventListener('click', function() {
+        document.getElementById('startEventAttendance').addEventListener('click', function () {
             if (currentEventDetails) {
                 startEventAttendance(currentEventDetails.name);
             }
         });
 
         // Export all events
-        document.getElementById('exportAllEvents').addEventListener('click', function() {
+        document.getElementById('exportAllEvents').addEventListener('click', function () {
             const events = new Map();
             attendanceRecords.forEach(record => {
                 if (!record.event) return;
@@ -621,14 +625,14 @@
             });
 
             const wb = XLSX.utils.book_new();
-            
+
             // Create a summary sheet
             const summaryData = [];
             events.forEach((records, eventName) => {
                 const uniqueStudents = new Set(records.map(r => r.studentId));
                 const sections = new Set(records.map(r => r.section).filter(Boolean));
                 const dates = new Set(records.map(r => r.date));
-                
+
                 summaryData.push({
                     'Event Name': eventName,
                     'Total Records': records.length,
@@ -736,7 +740,7 @@
         });
 
         // Export single event details
-        document.getElementById('exportEventDetails').addEventListener('click', function() {
+        document.getElementById('exportEventDetails').addEventListener('click', function () {
             if (!currentEventDetails) return;
 
             const wb = XLSX.utils.book_new();
@@ -833,11 +837,11 @@
         });
 
         // Import single event details (replace or upsert records for the event)
-        document.getElementById('importEventDetails').addEventListener('click', function() {
+        document.getElementById('importEventDetails').addEventListener('click', function () {
             document.getElementById('importEventFile').click();
         });
 
-        document.getElementById('importEventFile').addEventListener('change', function(e) {
+        document.getElementById('importEventFile').addEventListener('change', function (e) {
             const file = e.target.files[0];
             if (!file) return;
             if (!currentEventDetails) {
@@ -847,7 +851,7 @@
             }
 
             const reader = new FileReader();
-            reader.onload = function(ev) {
+            reader.onload = function (ev) {
                 try {
                     const data = new Uint8Array(ev.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
@@ -912,12 +916,12 @@
         const confirmDeleteEvent = document.getElementById('confirmDeleteEvent');
         let eventToDelete = null;
 
-        deleteEventConfirmation.addEventListener('input', function() {
+        deleteEventConfirmation.addEventListener('input', function () {
             confirmDeleteEvent.disabled = this.value !== 'Delete';
         });
 
         // Allow pressing Enter to confirm deletion when the confirmation text is correct
-        deleteEventConfirmation.addEventListener('keydown', function(event) {
+        deleteEventConfirmation.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
                 if (deleteEventConfirmation.value === 'Delete' && !confirmDeleteEvent.disabled) {
@@ -926,10 +930,10 @@
             }
         });
 
-        confirmDeleteEvent.addEventListener('click', async function() {
+        confirmDeleteEvent.addEventListener('click', async function () {
             if (deleteEventConfirmation.value === 'Delete' && window.eventToDelete) {
                 const { eventName, eventId } = window.eventToDelete;
-                
+
                 try {
                     // Delete from Local Storage immediately (works offline)
                     if (window.offlineSync) {
@@ -937,7 +941,7 @@
                         const filtered = localRecords.filter(r => r.event !== eventName);
                         localStorage.setItem(window.offlineSync.localStoragePrefix + 'attendance', JSON.stringify(filtered));
                         localStorage.setItem('attendanceRecords', JSON.stringify(filtered));
-                        
+
                         // Also delete event from Local Storage if it exists
                         const localEvents = window.offlineSync.getFromLocalStorage('events');
                         const filteredEvents = localEvents.filter(e => e.name !== eventName && e.id !== eventId);
@@ -947,7 +951,7 @@
                         attendanceRecords = attendanceRecords.filter(record => record.event !== eventName);
                         localStorage.setItem('attendanceRecords', JSON.stringify(attendanceRecords));
                     }
-                    
+
                     // Delete from Firebase if available (will queue for sync if offline)
                     if (firebaseDB) {
                         try {
@@ -975,7 +979,7 @@
                             // Continue - Local Storage is already updated and will sync when online
                         }
                     }
-                    
+
                     // Refresh attendance records from Local Storage
                     if (firebaseDB) {
                         attendanceRecords = await firebaseDB.getAttendanceRecords();
@@ -984,11 +988,11 @@
                     } else {
                         attendanceRecords = attendanceRecords.filter(record => record.event !== eventName);
                     }
-                    
+
                     // Hide modal and reset
                     deleteEventModal.hide();
                     window.eventToDelete = null;
-                    
+
                     updateEventsList();
                     alert(`Event "${eventName}" has been deleted successfully.`);
                 } catch (error) {
@@ -1003,18 +1007,18 @@
         const deleteConfirmation = document.getElementById('deleteConfirmation');
         const confirmDeleteAll = document.getElementById('confirmDeleteAll');
 
-        document.getElementById('deleteAllEvents').addEventListener('click', function() {
+        document.getElementById('deleteAllEvents').addEventListener('click', function () {
             deleteConfirmation.value = '';
             confirmDeleteAll.disabled = true;
             deleteAllModal.show();
         });
 
-        deleteConfirmation.addEventListener('input', function() {
+        deleteConfirmation.addEventListener('input', function () {
             confirmDeleteAll.disabled = this.value !== 'Delete';
         });
 
         // Allow pressing Enter to confirm deletion when the confirmation text is correct
-        deleteConfirmation.addEventListener('keydown', function(event) {
+        deleteConfirmation.addEventListener('keydown', function (event) {
             if (event.key === 'Enter') {
                 event.preventDefault();
                 if (deleteConfirmation.value === 'Delete' && !confirmDeleteAll.disabled) {
@@ -1023,13 +1027,13 @@
             }
         });
 
-        confirmDeleteAll.addEventListener('click', async function() {
+        confirmDeleteAll.addEventListener('click', async function () {
             if (deleteConfirmation.value === 'Delete') {
                 try {
                     // Get all events and attendance records before clearing
                     const allEvents = await firebaseDB.getEvents();
                     const allRecords = await firebaseDB.getAttendanceRecords();
-                    
+
                     // Get unique event names from attendance records (for events created from records)
                     const eventNamesFromRecords = new Set();
                     allRecords.forEach(record => {
@@ -1037,7 +1041,7 @@
                             eventNamesFromRecords.add(record.event);
                         }
                     });
-                    
+
                     // Clear Local Storage first (works offline)
                     if (window.offlineSync) {
                         localStorage.removeItem(window.offlineSync.localStoragePrefix + 'attendance');
@@ -1046,7 +1050,7 @@
                     } else {
                         localStorage.removeItem('attendanceRecords');
                     }
-                    
+
                     // Queue deletions for sync (works offline)
                     if (window.offlineSync && firebaseDB) {
                         // Queue each event deletion
@@ -1054,9 +1058,9 @@
                             if (event.id && event.id !== 'undefined' && event.id !== 'null' && event.id !== '') {
                                 window.offlineSync.addToPendingQueue({
                                     type: 'deleteEvent',
-                                    data: { 
-                                        eventId: event.id, 
-                                        eventName: event.name || event.eventName 
+                                    data: {
+                                        eventId: event.id,
+                                        eventName: event.name || event.eventName
                                     }
                                 });
                             } else if (event.name) {
@@ -1067,7 +1071,7 @@
                                 });
                             }
                         }
-                        
+
                         // Queue attendance record deletions by event name (for events created from records)
                         eventNamesFromRecords.forEach(eventName => {
                             // Check if this event wasn't already queued
@@ -1080,7 +1084,7 @@
                             }
                         });
                     }
-                    
+
                     // Clear Firebase if online
                     if (firebaseDB && window.offlineSync && window.offlineSync.isOnline) {
                         try {
@@ -1090,7 +1094,7 @@
                                     await firebaseDB.deleteEvent(event.id, event.name || event.eventName);
                                 }
                             }
-                            
+
                             // Delete attendance records by event name (for events created from records)
                             for (const eventName of eventNamesFromRecords) {
                                 const eventExists = allEvents.find(e => e.name === eventName || e.eventName === eventName);
@@ -1103,11 +1107,11 @@
                             // Continue even if Firebase fails - Local Storage is already cleared and queued for sync
                         }
                     }
-                    
+
                     // Clear local arrays
                     attendanceRecords = [];
                     events = [];
-                    
+
                     deleteAllModal.hide();
                     updateEventsList();
                     alert('All events have been deleted successfully.');
@@ -1119,38 +1123,38 @@
         });
 
         // Import Events functionality
-        document.getElementById('importEvents').addEventListener('click', function() {
+        document.getElementById('importEvents').addEventListener('click', function () {
             document.getElementById('importFile').click();
         });
 
-        document.getElementById('importFile').addEventListener('change', async function(e) {
+        document.getElementById('importFile').addEventListener('change', async function (e) {
             const file = e.target.files[0];
             if (!file) return;
 
             const reader = new FileReader();
-            reader.onload = async function(e) {
+            reader.onload = async function (e) {
                 try {
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
-                    
+
                     // Get the first sheet (Summary sheet)
                     const summarySheet = workbook.Sheets[workbook.SheetNames[0]];
                     const summaryData = XLSX.utils.sheet_to_json(summarySheet);
-                    
+
                     // Process each event sheet
                     const importedRecords = [];
                     workbook.SheetNames.forEach(sheetName => {
                         // Skip the summary sheet and section sheets
                         if (sheetName === 'Summary' || sheetName.endsWith('_Sections')) return;
-                        
+
                         const sheet = workbook.Sheets[sheetName];
                         const records = XLSX.utils.sheet_to_json(sheet);
-                        
+
                         // Process each record
                         records.forEach(record => {
                             // Skip summary rows
                             if (record['Student#'] === 'Summary' || record['Student#'] === 'Section Total') return;
-                            
+
                             // Create attendance record
                             const attendanceRecord = {
                                 studentId: record['Student#'],
@@ -1169,7 +1173,7 @@
                     // Merge with existing records
                     const existingRecords = firebaseDB ? await firebaseDB.getAttendanceRecords() : JSON.parse(localStorage.getItem('attendanceRecords')) || [];
                     const mergedRecords = [...existingRecords, ...importedRecords];
-                    
+
                     // Remove duplicates (keep existing records if there's a conflict)
                     const uniqueRecords = new Map();
                     mergedRecords.forEach(record => {
@@ -1193,7 +1197,7 @@
                         // Fallback to localStorage
                         localStorage.setItem('attendanceRecords', JSON.stringify(Array.from(uniqueRecords.values())));
                     }
-                    
+
                     // Refresh the page
                     location.reload();
                 } catch (error) {
@@ -1201,10 +1205,11 @@
                 }
             };
             reader.readAsArrayBuffer(file);
-            
+
             // Clear the file input
             e.target.value = '';
         });
     </script>
 </body>
-</html> 
+
+</html>

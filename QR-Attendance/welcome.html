@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,7 +15,8 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="../homepage/index.html">
-                <img src="../merchandise/Photos/PHILSCA-LOGO-WINGS.png" alt="AISERS Logo" style="height:48px;width:auto;margin-right:12px;">
+                <img src="../merchandise/Photos/PHILSCA-LOGO-WINGS.png" alt="AISERS Logo"
+                    style="height:48px;width:auto;margin-right:12px;">
                 <span class="fw-bold" style="letter-spacing:2px;font-size:1.5rem;">ALLIANCE APP</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -41,8 +43,8 @@
                         <form id="eventForm">
                             <div class="mb-4">
                                 <label for="eventName" class="form-label">Event Name</label>
-                                <input type="text" class="form-control" id="eventName" required 
-                                       placeholder="Enter event name">
+                                <input type="text" class="form-control" id="eventName" required
+                                    placeholder="Enter event name">
                             </div>
                             <div class="d-grid gap-2">
                                 <button type="submit" class="btn btn-primary">Start Attendance</button>
@@ -60,7 +62,6 @@
                             <a href="events.html" class="btn btn-info">View All Events</a>
                             <a href="generate-qr.html" class="btn btn-warning">Generate Bar Codes</a>
                             <a href="barcode-database.html" class="btn btn-warning">View Barcode Database</a>
-                            <a href="firebase-migration.html" class="btn btn-success">Migrate to Firebase</a>
                         </div>
                     </div>
                 </div>
@@ -68,17 +69,12 @@
         </div>
     </div>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-    <script src="firebase-config.js"></script>
-    <script src="offline-sync-service.js"></script>
-    <script src="firebase-database-service.js"></script>
     <script src="lib/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById('eventForm').addEventListener('submit', async function(e) {
+        document.getElementById('eventForm').addEventListener('submit', async function (e) {
             e.preventDefault();
             const eventName = document.getElementById('eventName').value;
-            
+
             // Create the event in Firebase
             if (window.firebaseDB) {
                 try {
@@ -89,10 +85,10 @@
                         status: 'active'
                     };
                     const eventId = await window.firebaseDB.createEvent(eventData);
-                    
+
                     // Set as current event
                     await window.firebaseDB.setCurrentEvent(eventName);
-                    
+
                     console.log('Event created successfully:', eventId);
                 } catch (error) {
                     console.error('Error creating event:', error);
@@ -103,10 +99,11 @@
                 // Fallback to localStorage
                 localStorage.setItem('currentEvent', eventName);
             }
-            
+
             // Redirect to the attendance page
             window.location.href = 'index.html';
         });
     </script>
 </body>
-</html> 
+
+</html>
